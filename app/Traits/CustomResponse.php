@@ -29,6 +29,20 @@ trait CustomResponse
         return response()->json($response, $code);
     }
 
+    public function error($message = 'Operation failed', $data = null, $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    {
+        $response = [
+            'status' => true,
+            'message' => $message,
+        ];
+
+        if (!empty($data)) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $code);
+    }
+
     public function serverError($title, $exception): JsonResponse
     {
         Log::critical("{$title} server error: ", [
