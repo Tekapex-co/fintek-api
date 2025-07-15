@@ -6,8 +6,10 @@ use App\Models\Account;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-describe('User', function () {
-    it('can retrieve a user account', function () {
+describe('User account', function () {
+
+    test('user account can be retrieved', function () {
+
         $user = User::factory()
             ->has(Account::factory()->state(function (array $attributes, User $user) {
                 return ['account_name' => $user->first_name . ' ' . $user->last_name];
@@ -35,7 +37,8 @@ describe('User', function () {
             ->and($responseData['data']['account']['type'])->toBe(AccountType::SAVINGS->value);
     });
 
-    it('can create a user account', function () {
+    test('user account can be created', function () {
+
         $firstName = fake()->firstName();
         $lastName = fake()->lastName();
         $email = fake()->unique()->safeEmail();
