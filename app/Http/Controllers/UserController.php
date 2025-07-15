@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserAccountRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use App\Traits\CustomResponse;
 use Illuminate\Http\JsonResponse;
@@ -45,9 +47,16 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user): JsonResponse
     {
-        //
+        try {
+            return $this->success(
+                'User account retrieved successfully',
+                new UserResource($user->load('account'))
+            );
+        } catch (\Exception $e) {
+            return $this->serverError('Error retrieving user account', $e);
+        }
     }
 
     /**
