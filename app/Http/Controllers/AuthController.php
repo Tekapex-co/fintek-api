@@ -14,9 +14,7 @@ class AuthController extends Controller
 {
     use CustomResponse;
 
-    public function __construct(protected readonly AuthService $authService)
-    {
-    }
+    public function __construct(protected readonly AuthService $authService) {}
 
     public function store(LoginRequest $request): JsonResponse
     {

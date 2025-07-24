@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class CreateUserAccountRequest extends FormRequest
+class TransferRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +22,10 @@ class CreateUserAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email', 'max:255'],
-            'password' => Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised(),
+            'from_account' => ['required', 'string', 'exists:accounts,account_number'],
+            'to_account' => ['required', 'string', 'exists:accounts,account_number'],
+            'amount' => ['required', 'numeric', 'min:1000'],
+            'note' => ['string'],
         ];
     }
 }

@@ -10,13 +10,13 @@ describe('User authentication', function () {
 
         $user = User::factory()
             ->has(Account::factory()->state(function (array $attributes, User $user) {
-                return ['account_name' => $user->first_name . ' ' . $user->last_name];
+                return ['account_name' => $user->first_name.' '.$user->last_name];
             }))
             ->create();
 
         $response = $this->post('api/login', [
             'email' => $user->email,
-            'password' => 'F1Ntek#Pass!'
+            'password' => 'F1Ntek#Pass!',
         ]);
 
         $response->assertStatus(200);

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -18,7 +17,7 @@ class AuthService
         try {
             $user = User::where('email', $data['email'])->first();
 
-            if (!$user || !Hash::check($data['password'], $user->password)) {
+            if (! $user || ! Hash::check($data['password'], $user->password)) {
                 throw ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
@@ -28,7 +27,7 @@ class AuthService
 
             return ['token' => $token];
         } catch (Exception $e) {
-            throw new Exception('Error logging in: ' . $e->getMessage());
+            throw new Exception('Error logging in: '.$e->getMessage());
         }
     }
 }

@@ -9,6 +9,10 @@ enum Status: string
     case SUSPENDED = 'suspended';
     case CLOSED = 'closed';
     case PENDING = 'pending';
+    case PROCESSING = 'processing';
+    case COMPLETED = 'completed';
+    case FAILED = 'failed';
+    case REVERSED = 'reversed';
 
     public static function values(): array
     {

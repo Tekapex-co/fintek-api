@@ -14,26 +14,18 @@ class UserController extends Controller
 {
     use CustomResponse;
 
-    public function __construct(protected readonly UserService $userService)
-    {
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function __construct(protected readonly UserService $userService) {}
 
     /**
      * Store a newly created resource in storage.
+     *
      * @throws \Exception
      */
     public function store(CreateUserAccountRequest $request): JsonResponse
     {
         try {
             $token = $this->userService->createUserAccount($request->validated());
+
             return $this->success(
                 'User account created successfully',
                 ['token' => $token],
@@ -57,21 +49,5 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return $this->serverError('Error retrieving user account', $e);
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

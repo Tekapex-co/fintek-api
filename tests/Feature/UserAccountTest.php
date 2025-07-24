@@ -12,13 +12,13 @@ describe('User account', function () {
 
         $user = User::factory()
             ->has(Account::factory()->state(function (array $attributes, User $user) {
-                return ['account_name' => $user->first_name . ' ' . $user->last_name];
+                return ['account_name' => $user->first_name.' '.$user->last_name];
             }))
             ->create();
 
         Sanctum::actingAs($user);
 
-        $response = $this->get('api/users/' . $user->id);
+        $response = $this->get('api/users/'.$user->id);
 
         $response->assertStatus(200);
 
@@ -29,7 +29,7 @@ describe('User account', function () {
             ->and($responseData['data']['first_name'])->toBe($user->first_name)
             ->and($responseData['data']['last_name'])->toBe($user->last_name)
             ->and($responseData['data']['email'])->toBe($user->email)
-            ->and($responseData['data']['account']['account_name'])->toBe($user->first_name . ' ' . $user->last_name)
+            ->and($responseData['data']['account']['account_name'])->toBe($user->first_name.' '.$user->last_name)
             ->and($responseData['data']['account']['account_number'])->toBeNumeric()
             ->and($responseData['data']['account']['balance'])->toBeGreaterThanOrEqual(0)
             ->and($responseData['data']['account']['book_balance'])->toBeGreaterThanOrEqual(0)
@@ -56,8 +56,8 @@ describe('User account', function () {
                 'status',
                 'message',
                 'data' => [
-                    'token'
-                ]
+                    'token',
+                ],
             ]);
 
         $responseData = $response->json();
@@ -67,7 +67,7 @@ describe('User account', function () {
 
         $user = User::first();
         expect($user->account)->not->toBeNull()
-            ->and($user->account->account_name)->toBe($firstName . ' ' . $lastName)
+            ->and($user->account->account_name)->toBe($firstName.' '.$lastName)
             ->and($user->account->account_number)->toBeNumeric()
             ->and($user->account->balance)->toBe(0)
             ->and($user->account->book_balance)->toBe(0)
@@ -75,4 +75,3 @@ describe('User account', function () {
             ->and($user->account->type)->toBe(AccountType::SAVINGS);
     });
 });
-

@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
-    use HasUlids, HasFactory;
+    use HasFactory, HasUlids;
 
     protected $fillable = [
         'user_id',
@@ -24,16 +25,33 @@ class Account extends Model
         'type',
         'interest_rate',
         'interest_type',
-        'interest_period'
+        'interest_period',
     ];
 
     protected $casts = [
         'type' => AccountType::class,
-        'status' => Status::class
+        'status' => Status::class,
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function transactions()
+    {
+        return Transaction::where('from_account_id', $this->id)
+            ->orWhere('to_account_id', $this->id)
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function incomingTransactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'to_account_id');
+    }
+
+    public function outgoingTransactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'from_account_id');
     }
 }
