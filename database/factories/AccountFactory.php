@@ -30,7 +30,7 @@ class AccountFactory extends Factory
             'type' => AccountType::SAVINGS,
             'interest_rate' => 0,
             'interest_type' => 'flat',
-            'interest_period' => 'monthly'
+            'interest_period' => 'monthly',
         ];
     }
 }

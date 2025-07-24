@@ -16,7 +16,7 @@ enum AccountType: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::SAVINGS => 'Savings Account',
             self::CURRENT => 'Current Account',
             self::FIXED => 'Fixed Deposit',

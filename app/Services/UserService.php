@@ -21,21 +21,21 @@ class UserService
                 // create an account for user
                 $user->account()->create([
                     'user_id' => $user->id,
-                    'account_name' => $user->first_name . ' ' . $user->last_name,
+                    'account_name' => $user->first_name.' '.$user->last_name,
                     'account_number' => rand(1000000000, 9999999999),
                     'currency' => 'NGN',
                     'status' => 'active',
                     'type' => 'savings',
                     'interest_rate' => 0.00,
                     'interest_type' => 'flat',
-                    'interest_period' => 'monthly'
+                    'interest_period' => 'monthly',
                 ]);
 
                 // return user token
                 return $user->createToken(config('fintek.token_name'))->plainTextToken;
             });
         } catch (\Exception $e) {
-            throw new \Exception('Error creating user account: ' . $e->getMessage());
+            throw new \Exception('Error creating user account: '.$e->getMessage());
         }
     }
 }

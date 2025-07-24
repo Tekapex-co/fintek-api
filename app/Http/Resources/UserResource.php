@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'avatar' => $this->avatar,
             'account' => new AccountResource($this->whenLoaded('account')),
-            'verified' => (bool) $this->email_verified_at
+            'verified' => (bool) $this->email_verified_at,
         ];
     }
 }

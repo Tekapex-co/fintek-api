@@ -10,10 +10,6 @@ trait CustomResponse
 {
     /**
      * Returns a success json response
-     * @param string $message
-     * @param object|array $data
-     * @param int $code
-     * @return JsonResponse
      */
     public function success(string $message = 'Operation successful', object|array $data = [], int $code = Response::HTTP_OK): JsonResponse
     {
@@ -22,7 +18,7 @@ trait CustomResponse
             'message' => $message,
         ];
 
-        if (!empty($data)) {
+        if (! empty($data)) {
             $response['data'] = $data;
         }
 
@@ -36,7 +32,7 @@ trait CustomResponse
             'message' => $message,
         ];
 
-        if (!empty($data)) {
+        if (! empty($data)) {
             $response['data'] = $data;
         }
 
@@ -51,7 +47,7 @@ trait CustomResponse
 
         return response()->json([
             'status' => false,
-            'message' => 'Internal server error'
+            'message' => 'Internal server error',
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
