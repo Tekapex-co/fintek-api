@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('to_account_running_balance', 15, 2)->nullable();
             $table->enum('status', Status::values());
             $table->string('note')->nullable();
-            $table->foreignId('initiated_by')->constrained('users');
+            $table->foreignUlid('initiated_by')->constrained('users');
             $table->timestamp('processed_at')->nullable();
             $table->string('failure_reason', FailureReason::values())->nullable();
             $table->timestamps();
