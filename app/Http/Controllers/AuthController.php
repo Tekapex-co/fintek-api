@@ -32,7 +32,7 @@ class AuthController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy(): JsonResponse
     {
         try {
 
