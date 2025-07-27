@@ -18,7 +18,7 @@ describe('User account', function () {
 
         Sanctum::actingAs($user);
 
-        $response = $this->get('api/users/'.$user->id);
+        $response = $this->get('api/user');
 
         $response->assertStatus(200);
 
@@ -44,7 +44,7 @@ describe('User account', function () {
         $email = fake()->unique()->safeEmail();
         $password = 'F1Ntek#Pass!';
 
-        $response = $this->post('api/users', [
+        $response = $this->post('api/register', [
             'first_name' => $firstName,
             'last_name' => $lastName,
             'email' => $email,
