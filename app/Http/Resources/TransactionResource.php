@@ -22,7 +22,7 @@ class TransactionResource extends JsonResource
             'to' => $this->toAccount->account_name,
             'amount' => $this->amount,
             'note' => $this->note,
-            'processed_at' => $this->processed_at,
+            'processed_at' => $this->processed_at->toDateTimeString(),
             'status' => $this->status,
         ];
     }
