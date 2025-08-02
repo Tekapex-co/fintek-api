@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\AccountType;
 use App\Enums\Status;
+use App\Enums\TransactionType;
 use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,17 +20,15 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $fromAccountId = Account::factory();
-        $toAccountId = Account::factory();
+        $fromAccount = Account::factory()->create();
 
         return [
-            'reference' => $this->faker->uuid(),
-            'from_account_id' => $fromAccountId->id,
-            'to_account_id' => $toAccountId->id,
-            'type' => $this->faker->randomElement(AccountType::values()),
+            'from_account_id' => $fromAccount->id,
+            'to_account_id' => Account::factory(),
+            'type' => $this->faker->randomElement(TransactionType::values()),
             'amount' => $this->faker->randomFloat(2, 10),
             'status' => $this->faker->randomElement(Status::values()),
-            'initiated_by' => $fromAccountId->user->id,
+            'initiated_by' => $fromAccount->user_id,
         ];
     }
 }
