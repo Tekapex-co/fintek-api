@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TransactionResource;
 use App\Models\Account;
+use App\Models\Transaction;
 use App\Services\AccountService;
 use App\Traits\CustomResponse;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -28,7 +30,28 @@ class AccountController extends Controller
             ]);
 
             return $this->error(message: $exception->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+
+            return $this->serverError('Error retrieving transactions', $e);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function show(Account $account, Transaction $transaction)
+    {
+        try {
+            return $this->success(data: new TransactionResource(
+                $this->accountService->getTransactionDetails($account, $transaction))
+            );
+        } catch (UnauthorizedException $exception) {
+            Log::critical('Possible hacking attempt: ', [
+                'exception' => $exception,
+            ]);
+
+            return $this->error(message: $exception->getMessage());
+        } catch (Exception $e) {
 
             return $this->serverError('Error retrieving transactions', $e);
         }
