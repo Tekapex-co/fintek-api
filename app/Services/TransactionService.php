@@ -9,14 +9,14 @@ use App\Exceptions\InvalidTransactionException;
 use App\Jobs\ProcessTransaction;
 use App\Models\Account;
 use App\Models\Transaction;
-use App\Traits\CustomResponse;
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\UnauthorizedException;
 
 class TransactionService
 {
-    use CustomResponse;
-
     /**
      * @throws InsufficientFundsException
      * @throws InvalidTransactionException
@@ -71,5 +71,30 @@ class TransactionService
         if ($fromAccount->status !== Status::ACTIVE || $toAccount->status !== Status::ACTIVE) {
             throw new InvalidTransactionException('One or both accounts are inactive');
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getTransactions($count = null): Collection
+    {
+        $user = Auth::user()->load('account');
+
+        if (! $user->account) {
+            throw new ModelNotFoundException('User account not found');
+        }
+
+        return $user->account->transactions()->latest()->get();
+    }
+
+    public function getTransactionDetails(Transaction $transaction): Transaction
+    {
+        $user = Auth::user()->load('account');
+
+        if ($transaction->from_account_id !== $user->account->id && $transaction->to_account_id !== $user->account->id) {
+            throw new UnauthorizedException('You are not authorized to view this transaction');
+        }
+
+        return $transaction;
     }
 }
