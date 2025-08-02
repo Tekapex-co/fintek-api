@@ -24,7 +24,7 @@ class ProcessTransaction implements ShouldQueue
     public function handle(): void
     {
         // get sender account balance
-        $senderAccount = Account::where($this->transaction->from_account_id)
+        $senderAccount = Account::where('id', $this->transaction->from_account_id)
             ->first();
 
         // debit sender
@@ -39,7 +39,7 @@ class ProcessTransaction implements ShouldQueue
         $senderAccount->decrement('balance', $this->transaction->amount);
 
         // credit receiving account
-        $receiverAccount = Account::where($this->transaction->to_account_id)
+        $receiverAccount = Account::where('id', $this->transaction->to_account_id)
             ->first();
 
         if (is_null($receiverAccount)) {
