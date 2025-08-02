@@ -14,15 +14,15 @@ class AuthService
      */
     public function login($data)
     {
+        $user = User::where('email', $data['email'])->first();
+
+        if (! $user || ! Hash::check($data['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
         try {
-            $user = User::where('email', $data['email'])->first();
-
-            if (! $user || ! Hash::check($data['password'], $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
-                ]);
-            }
-
             $token = $user->createToken(config('fintek.token_name'))->plainTextToken;
 
             return ['token' => $token];
