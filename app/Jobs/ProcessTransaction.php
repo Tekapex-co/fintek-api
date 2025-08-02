@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\DB;
 
 class ProcessTransaction implements ShouldQueue
 {
@@ -20,11 +21,16 @@ class ProcessTransaction implements ShouldQueue
 
     /**
      * Execute the job.
+     * @throws \Throwable
      */
     public function handle(): void
     {
+        $this->transaction->update(['processed_at' => now()]);
+
+        DB::beginTransaction();
+
         // get sender account balance
-        $senderAccount = Account::where($this->transaction->from_account_id)
+        $senderAccount = Account::where('id', $this->transaction->from_account_id)
             ->first();
 
         // debit sender
@@ -39,7 +45,7 @@ class ProcessTransaction implements ShouldQueue
         $senderAccount->decrement('balance', $this->transaction->amount);
 
         // credit receiving account
-        $receiverAccount = Account::where($this->transaction->to_account_id)
+        $receiverAccount = Account::where('id', $this->transaction->to_account_id)
             ->first();
 
         if (is_null($receiverAccount)) {
@@ -54,6 +60,8 @@ class ProcessTransaction implements ShouldQueue
 
         // update transaction status
         $this->updateTransactionStatus($this->transaction, Status::COMPLETED);
+
+        DB::commit();
     }
 
     private function updateTransactionStatus($transaction, $status, $failureReason = null): void
