@@ -70,7 +70,7 @@ class ProcessTransaction implements ShouldQueue
         $this->transaction->update([
             'status' => $status,
             'processed_at' => now(),
-            'failure_reason' => FailureReason::INSUFFICIENT_FUNDS,
+            'failure_reason' => $failureReason,
         ]);
 
         // send push notification - insufficient funds
