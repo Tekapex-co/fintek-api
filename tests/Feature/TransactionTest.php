@@ -84,7 +84,9 @@ describe('Transaction', function () {
             'note' => fake()->sentence(5, true),
         ];
 
-        $response = $this->post('api/account/transfer', $payload);
+        $response = $this->post('api/account/transfer', $payload,
+            ['Idempotency-key' => \Ramsey\Uuid\Uuid::uuid4()->toString()]
+        );
 
         $response->assertStatus(200);
 
