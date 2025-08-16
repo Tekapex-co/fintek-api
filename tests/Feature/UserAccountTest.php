@@ -5,6 +5,7 @@ use App\Enums\Status;
 use App\Models\Account;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
+use function Pest\Laravel\withoutExceptionHandling;
 
 describe('User account', function () {
 
@@ -20,7 +21,7 @@ describe('User account', function () {
             'last_name' => $lastName,
             'email' => $email,
             'password' => $password,
-        ]);
+        ], ['Idempotency-key' => \Ramsey\Uuid\Uuid::uuid4()->toString()]);
 
         $response->assertStatus(201)
             ->assertJsonStructure([

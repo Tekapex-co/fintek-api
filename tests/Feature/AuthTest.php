@@ -17,7 +17,7 @@ describe('User authentication', function () {
         $response = $this->post('api/login', [
             'email' => $user->email,
             'password' => 'F1Ntek#Pass!',
-        ]);
+        ], ['Idempotency-key' => \Ramsey\Uuid\Uuid::uuid4()->toString()]);
 
         $response->assertStatus(200);
 
