@@ -5,8 +5,6 @@ use App\Models\Savings;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-use function Pest\Laravel\withoutExceptionHandling;
-
 describe('Savings', function () {
 
     test('user can get plans', function () {
@@ -37,6 +35,8 @@ describe('Savings', function () {
             ->toHaveKeys(['id', 'name', 'duration', 'interest_rate', 'created_at'])
             ->and($responseData['data'][0]['id'])->toBeString()
             ->and($responseData['data'][0]['name'])->toBeString()
+            ->and($responseData['data'][0]['balance'])->toBeNumeric()->toBeGreaterThanOrEqual(0)
+            ->and($responseData['data'][0]['progress'])->toBeNumeric()->toBeGreaterThanOrEqual(0)
             ->and($responseData['data'][0]['duration'])->toBeNumeric()->toBeIn([3, 6, 12])
             ->and($responseData['data'][0]['interest_rate'])->toBeNumeric()->toBeIn([2.5, 5, 12])
             ->and($responseData['data'][0]['created_at'])->toBeString();
@@ -77,8 +77,10 @@ describe('Savings', function () {
             ->toHaveKeys(['id', 'name', 'duration', 'interest_rate', 'created_at'])
             ->and($responseData['data']['id'])->toBeString()
             ->and($responseData['data']['name'])->toBeString()
+            ->and($responseData['data']['balance'])->toBeNumeric()->toBeGreaterThanOrEqual(0)
             ->and($responseData['data']['duration'])->toBeNumeric()->toBeIn([3, 6, 12])
             ->and($responseData['data']['interest_rate'])->toBeNumeric()->toBeIn([2.5, 5, 12])
+            ->and($responseData['data']['progress'])->toBeNumeric()->toBeGreaterThanOrEqual(0)
             ->and($responseData['data']['created_at'])->toBeString();
     });
 });
