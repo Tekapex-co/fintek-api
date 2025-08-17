@@ -14,6 +14,7 @@ class Savings extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'balance',
         'duration',
         'interest_rate',
     ];
