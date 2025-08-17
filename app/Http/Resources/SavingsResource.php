@@ -18,7 +18,7 @@ class SavingsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'balance' => (float) $this->balance,
+            'balance' => number_format($this->balance, 2),
             'duration' => (int) $this->duration,
             'interest_rate' => (float) $this->interest_rate,
             'progress' => $progress,
