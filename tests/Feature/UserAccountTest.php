@@ -5,7 +5,6 @@ use App\Enums\Status;
 use App\Models\Account;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
-use function Pest\Laravel\withoutExceptionHandling;
 
 describe('User account', function () {
 
