@@ -29,6 +29,7 @@ class User extends Authenticatable
         'pin',
         'phone',
         'avatar',
+        'notification_token',
     ];
 
     /**
