@@ -8,4 +8,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/savings', [SavingsController::class, 'store'])
         ->middleware(EnsureIdempotency::class);
+
+    Route::get('/savings/{savings}', [SavingsController::class, 'show']);
 });

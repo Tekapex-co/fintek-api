@@ -43,7 +43,11 @@ class SavingsController extends Controller
 
     public function show(Savings $savings)
     {
-        return new SavingsResource($savings);
+        try {
+            return $this->success(data: new SavingsResource($savings));
+        } catch (\Exception $e) {
+            return $this->serverError('Error creating savings account', $e);
+        }
     }
 
     public function update(SavingsRequest $request, Savings $savings)
