@@ -29,7 +29,7 @@ class User extends Authenticatable
         'pin',
         'phone',
         'avatar',
-        'notification_token',
+        'device_token',
     ];
 
     /**
@@ -55,6 +55,14 @@ class User extends Authenticatable
             'password' => 'hashed',
             'pin' => 'hashed',
         ];
+    }
+
+    /**
+     * Route notifications for the FCM channel.
+     */
+    public function routeNotificationForFcm(): string
+    {
+        return $this->device_token;
     }
 
     public function account(): HasOne
