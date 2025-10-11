@@ -11,7 +11,7 @@ class PushNotificationController extends Controller
     public function __invoke(Request $request): void
     {
         try {
-            Auth::user()->update(['notification_token' => $request->token]);
+            Auth::user()->update(['device_token' => $request->token]);
         } catch (\Exception $e) {
             Log::critical('Error storing notification token', [
                 'userId' => Auth::user()->id,
